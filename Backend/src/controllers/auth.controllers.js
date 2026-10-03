@@ -55,7 +55,7 @@ const login = async function (req,res){
     const token = jwt.sign({_id : existingUser._id},process.env.JWT_SECRET,{expiresIn : "7d"})
     res.cookie("Token" , token ,{
         httpOnly:true,
-        sameSite : "strict",
+        sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
         secure : process.env.NODE_ENV === "development"?false:true,
         maxAge : 7*24*60*60*1000
     })
@@ -136,7 +136,7 @@ catch(error){
     res.cookie("Token",token,{
         httpOnly : true, //It can be accessable only by HTTP not by JS.
         secure:process.env.NODE_ENV === 'development'?false:true,
-        sameSite:"strict", //Prevent attacks.
+        sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
         maxAge : 7*24*60*60*1000
     })
     
